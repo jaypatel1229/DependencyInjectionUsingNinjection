@@ -1,22 +1,34 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NinjectEX
 {
-    public class Program : Ninject.Modules.NinjectModule
+    public class Program 
     {
+       
         static void Main(string[] args)
         {
-
+            StandardKernel _Kernal = new StandardKernel();
+            _Kernal.Load(Assembly.GetExecutingAssembly());
+            IProduct _objePro = _Kernal.Get<IProduct>();
+            Bl objBl = new Bl(_objePro);
+            objBl.Insert();
+            Console.ReadKey();
         }
+        
+    }
+    public class NinjectBinding : Ninject.Modules.NinjectModule
+    {
         public override void Load()
         {
-            throw new NotImplementedException();
+           
             Bind<IProduct>().To<Dl>();    //Inject DL Using IProduct
-        }
+        } 
     }
     class Bl
     {
@@ -37,6 +49,7 @@ namespace NinjectEX
         public string InsertProduct() //User Interface Method : 30
         {
             string Value = "Dependency Injection using Ninjection";
+            Console.WriteLine(Value);
             return Value;
         }
     }
